@@ -49,7 +49,8 @@ AM_CPPFLAGS =                                           \
     @GLIB2_CFLAGS@                                      \
     @GOBJECT2_CFLAGS@                                   \
     @GIO2_CFLAGS@                                       \
-    -DIBUS_CACHE_DIR=\""$(localstatedir)/cache/ibus"\"  \
+    @JSON_GLIB_CFLAGS@                                       \
+   -DIBUS_CACHE_DIR=\""$(localstatedir)/cache/ibus"\"  \
     -DIBUS_DATA_DIR=\"$(pkgdatadir)\"                   \
     -DIBUS_DISABLE_DEPRECATION_WARNINGS                 \
     -DIBUS_COMPILATION                                  \
@@ -64,7 +65,8 @@ libibus_1_0_la_LIBADD =     \
     @GLIB2_LIBS@            \
     @GOBJECT2_LIBS@         \
     @GIO2_LIBS@             \
-    $(NULL)
+    @JSON_GLIB_LIBS@             \
+   $(NULL)
 libibus_1_0_la_LDFLAGS =            \
     -no-undefined                   \
     -export-symbols-regex "ibus_.*" \

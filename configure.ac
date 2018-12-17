@@ -159,6 +159,13 @@ PKG_CHECK_MODULES(GTHREAD2, [
     gthread-2.0 >= glib_required_version
 ])
 
+#Check json-glib
+PKG_CHECK_MODULES(JSON_GLIB, [
+    json-glib-1.0 >= 1.4.0
+])
+
+
+
 # --disable-tests option.
 AC_ARG_ENABLE(tests,
     AS_HELP_STRING([--disable-tests],

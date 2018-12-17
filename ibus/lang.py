@@ -24,7 +24,7 @@ __all__ = (
         "get_language_name",
     )
 
-import xml.parsers.expat
+import json
 import locale
 import gettext
 
@@ -42,32 +42,21 @@ def get_language_name(_locale):
         lang = gettext.dgettext("ibus", lang)
     return lang
 
-def __start_element(name, attrs):
-    global __languages_dict
-    try:
-        name = attrs[u"name"]
-        for attr_name in (u"id", u"part1_code", u"part2_code"):
-            if attr_name in attrs:
-                attr_value = attrs[attr_name]
-                __languages_dict[attr_value] = name
-    except:
-        pass
-
-def __end_element(name):
-    pass
-
-def __char_data(data):
-    pass
-
 def __load_lang():
     import os
     import _config
-    iso_639_3_xml = os.path.join(_config.ISOCODES_PREFIX, "share/xml/iso-codes/iso_639-3.xml")
-    p = xml.parsers.expat.ParserCreate()
-    p.StartElementHandler = __start_element
-    p.EndElementHandler = __end_element
-    p.CharacterDataHandler = __char_data
-    p.ParseFile(file(iso_639_3_xml))
+    iso_639_json = os.path.join(_config.ISOCODES_PREFIX, "share/iso-codes/json/iso_639-3.json")
+    if os.path.isfile(iso_639_json):
+        with open(iso_639_json, "r") as json_file:
+            iso_639_data = json.load(json_file)
+            for lang in iso_639_data["639-3"]:
+                name = lang["name"]
+                for attr_name in (u"alpha_2", u"alpha_3"):
+                    if attr_name in lang:
+                        attr_value = lang[attr_name]
+                        __languages_dict[attr_value] = name
+    else:
+        print("Error json file", iso_639_json, "does not exist")
 
 __load_lang()
 
